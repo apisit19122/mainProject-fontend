@@ -1,14 +1,14 @@
 import React from "react";
 import "./css/App.css";
-
 import { useSelector } from "react-redux";
-import { selectUser } from "./reducers/users";
+import { RootState } from "./store";
 
 import Login from "./pages/login";
 import Logout from "./pages/login/logout";
 
 const App = () => {
-  const user = useSelector(selectUser);
+  const authUser = useSelector((state: RootState) => state).user;
+  const { user } = authUser;
 
   return <div>{user ? <Logout /> : <Login />}</div>;
 };
