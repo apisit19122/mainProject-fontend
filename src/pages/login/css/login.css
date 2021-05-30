@@ -30,6 +30,7 @@
 }
 
 .submit_btn {
+  cursor: pointer;
   padding:  17px 30px;
   margin-top: 10px;
   background: black;
