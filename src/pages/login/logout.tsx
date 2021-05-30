@@ -1,13 +1,19 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+// import { Redirect } from "react-router-dom";
+
 import { RootState } from "../../store";
 import { logout } from "../../reducers/authReducer";
 import "./css/logout.css";
 
-const Logout = () => {
+const Logout: React.FC<{ history: any }> = ({ history }) => {
   const dispatch = useDispatch();
   const authUser = useSelector((state: RootState) => state).user;
   const { user } = authUser;
+
+  if (!user) {
+    history.push("/");
+  }
 
   const handleLogout = (e: any) => {
     e.preventDefault();

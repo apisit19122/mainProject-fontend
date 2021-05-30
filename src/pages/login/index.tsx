@@ -1,18 +1,24 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import { login } from "../../reducers/authReducer";
+import { RootState } from "../../store";
 import "./css/login.css";
 
-const Login = () => {
+const Login: React.FC<{ history: any; props: any }> = ({ history, props }) => {
   const dispatch = useDispatch();
+  const authUser = useSelector((state: RootState) => state).user;
+  const { user } = authUser;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  if (user) {
+    history.push("/home");
+  }
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
-
-    console.log("asd");
 
     const token = "1212312121";
     const newUsers = {
