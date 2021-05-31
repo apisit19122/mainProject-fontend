@@ -4,7 +4,7 @@ export const LOGOUT = "auth/LOGOUT";
 export interface User {
   id: string;
   username: string;
-  password: string;
+  // password: string;
   firstName: string;
   lastName: string;
 }

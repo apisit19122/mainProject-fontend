@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useMutation } from "@apollo/react-hooks";
 import { login } from "../../reducers/authReducer";
 import { RootState } from "../../store";
+import signinMutation from "./schema/signinMutation";
+// import AllUsersQuery from "./schema/allUsers";
 import "./css/login.css";
 
 const Login: React.FC<{ history: any; props: any }> = ({ history, props }) => {
@@ -13,22 +16,34 @@ const Login: React.FC<{ history: any; props: any }> = ({ history, props }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [signin] = useMutation(signinMutation, {
+    variables: {
+      username: username,
+      password: password,
+    },
+  });
+
   if (user) {
-    history.push("/home");
+    return <Redirect to="/home" />;
   }
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    const token = "1212312121";
-    const newUsers = {
-      id: username,
-      username: username,
-      password: password,
-      firstName: username,
-      lastName: username,
-    };
-    dispatch(login(token, { ...newUsers }));
+    signin()
+      .then((response) => {
+        const { token, user } = response.data.signin;
+        const newUsers = {
+          id: user.id,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
+        dispatch(login(token, { ...newUsers }));
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
   };
 
   return (
